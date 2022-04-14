@@ -1,0 +1,52 @@
+Presentati | /api/Admin/Presentati
+- varchar(n) : authorization |
+{
+    "nomeOriginale": "0",
+    "nomeVariante": "authorization",
+    "tipo": "varchar(n)",
+    "indexParameter": 0,
+    "descrizione": "",
+    "sommario": "",
+    "obbligatorio": false,
+    "dovePossoTrovarlo": "rotta",
+    "posizione": "header",
+    "autenticatore": true
+}
+	onLog :(parametri, listaParametri) => __awaiter(void 0, void 0, void 0, function* () {
+                    const aout = listaParametri.GetAutenticatore();
+                    let adminTmp = undefined;
+                    try {
+                        const rito = yield __1.clientPostgres.query('SELECT * FROM "Admin" where id = $1', [aout.valore]);
+                        const tt = rito.rows[0];
+                        const gg = new Admin_1();
+                        gg.nome = tt.nome;
+                        return gg;
+                    }
+                    catch (error) {
+                        console.log(error);
+                        throw new mp_holistic_1.ErroreMio({ codiceErrore: 500, messaggio: 'Hei non hai le credenziali.' });
+                    }
+                    return adminTmp !== null && adminTmp !== void 0 ? adminTmp : undefined;
+                })
+percorsi :{"pathGlobal":"/api/Admin/Presentati","patheader":"localhost","porta":8080}
+tipo :get
+path :Presentati
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+Presentati(authorization) {
+        if (authorization == '5') {
+            scambiovariabile = Math.random();
+        }
+        return {
+            stato: 200,
+            body: {
+                scambiovariabile: scambiovariabile
+            }
+        };
+    }

@@ -1,0 +1,48 @@
+CreaNuovoProcesso | /api/Admin/CreaNuovoProcesso
+- varchar(n) : 0 |
+{
+    "nomeOriginale": "0",
+    "nomeVariante": "0",
+    "tipo": "varchar(n)",
+    "indexParameter": 0,
+    "descrizione": "",
+    "sommario": "",
+    "obbligatorio": false,
+    "dovePossoTrovarlo": "rotta",
+    "posizione": "query",
+    "autenticatore": false
+}
+	onLog :(parametri, listaParametri) => __awaiter(void 0, void 0, void 0, function* () {
+                    try {
+                        const gg = new Admin_1();
+                        return gg;
+                    }
+                    catch (error) {
+                        console.log(error);
+                        throw new mp_holistic_1.ErroreMio({ codiceErrore: 500, messaggio: 'Non so il motivo' });
+                    }
+                })
+percorsi :{"pathGlobal":"/api/Admin/CreaNuovoProcesso","patheader":"localhost","porta":8080}
+tipo :get
+path :CreaNuovoProcesso
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+CreaNuovoProcesso(id) {
+        //return "ciao :" + this.nome;
+        if (id == '5') {
+            scambiovariabile = Math.random();
+        }
+        return {
+            stato: 200,
+            body: {
+                authorization: '' + id,
+                scambiovariabile: scambiovariabile
+            }
+        };
+    }

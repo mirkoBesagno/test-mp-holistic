@@ -1,0 +1,9 @@
+
+html : []
+nomeOriginale : Admin
+nomeVariante : Admin
+path : Admin
+percorsi : {"pathGlobal":"/api/Admin","patheader":"localhost","porta":8080}
+rotte : function(req, res, next) {
+    app.handle(req, res, next);
+  }

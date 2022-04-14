@@ -1,0 +1,167 @@
+
+html : []
+nomeOriginale : Admin
+nomeVariante : Admin
+path : Admin
+percorsi : {"pathGlobal":"/api/Admin","patheader":"localhost","porta":8080}
+rotte : function(req, res, next) {
+    app.handle(req, res, next);
+  }
+Ciao | /api/Admin/Ciao
+
+percorsi :{"pathGlobal":"/api/Admin/Ciao","patheader":"localhost","porta":8080}
+tipo :get
+path :Ciao
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+Ciao() {
+        return "ciao";
+    }
+********************
+Presentati | /api/Admin/Presentati
+- varchar(n) : authorization |
+{
+    "nomeOriginale": "0",
+    "nomeVariante": "authorization",
+    "tipo": "varchar(n)",
+    "indexParameter": 0,
+    "descrizione": "",
+    "sommario": "",
+    "obbligatorio": false,
+    "dovePossoTrovarlo": "rotta",
+    "posizione": "header",
+    "autenticatore": true
+}
+	onLog :(parametri, listaParametri) => __awaiter(void 0, void 0, void 0, function* () {
+                    const aout = listaParametri.GetAutenticatore();
+                    let adminTmp = undefined;
+                    try {
+                        const rito = yield __1.clientPostgres.query('SELECT * FROM "Admin" where id = $1', [aout.valore]);
+                        const tt = rito.rows[0];
+                        const gg = new Admin_1();
+                        gg.nome = tt.nome;
+                        return gg;
+                    }
+                    catch (error) {
+                        console.log(error);
+                        throw new mp_holistic_1.ErroreMio({ codiceErrore: 500, messaggio: 'Hei non hai le credenziali.' });
+                    }
+                    return adminTmp !== null && adminTmp !== void 0 ? adminTmp : undefined;
+                })
+percorsi :{"pathGlobal":"/api/Admin/Presentati","patheader":"localhost","porta":8080}
+tipo :get
+path :Presentati
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+Presentati(authorization) {
+        if (authorization == '5') {
+            scambiovariabile = Math.random();
+        }
+        return {
+            stato: 200,
+            body: {
+                scambiovariabile: scambiovariabile
+            }
+        };
+    }
+********************
+CambiaNome | /api/Admin/CambiaNome
+	onLog :(parametri, listaParametri) => {
+                    //(<ListaExpressParametro>listaParametri).GetAutenticatore();
+                    let adminTmp = new Admin_1(); /* await knexInstance<Admin>()
+                        .select('username')
+                        .from(Admin)
+                        .where({ id: listaParametri[0] }).first(); */
+                    return adminTmp;
+                }
+percorsi :{"pathGlobal":"/api/Admin/CambiaNome","patheader":"localhost","porta":8080}
+tipo :get
+path :CambiaNome
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+CambiaNome(nome) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield __1.clientPostgres_ruolouno.connect();
+                yield __1.clientPostgres_ruolouno.query('INSERT INTO public."Admin"' + " (nome) VALUES('mirko');");
+            }
+            catch (error) {
+                console.log(error);
+            }
+            return {
+                stato: 200,
+                body: {
+                    messaggio: "ciao"
+                }
+            };
+            //return "ciao";
+        });
+    }
+********************
+CreaNuovoProcesso | /api/Admin/CreaNuovoProcesso
+- varchar(n) : 0 |
+{
+    "nomeOriginale": "0",
+    "nomeVariante": "0",
+    "tipo": "varchar(n)",
+    "indexParameter": 0,
+    "descrizione": "",
+    "sommario": "",
+    "obbligatorio": false,
+    "dovePossoTrovarlo": "rotta",
+    "posizione": "query",
+    "autenticatore": false
+}
+	onLog :(parametri, listaParametri) => __awaiter(void 0, void 0, void 0, function* () {
+                    try {
+                        const gg = new Admin_1();
+                        return gg;
+                    }
+                    catch (error) {
+                        console.log(error);
+                        throw new mp_holistic_1.ErroreMio({ codiceErrore: 500, messaggio: 'Non so il motivo' });
+                    }
+                })
+percorsi :{"pathGlobal":"/api/Admin/CreaNuovoProcesso","patheader":"localhost","porta":8080}
+tipo :get
+path :CreaNuovoProcesso
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+CreaNuovoProcesso(id) {
+        //return "ciao :" + this.nome;
+        if (id == '5') {
+            scambiovariabile = Math.random();
+        }
+        return {
+            stato: 200,
+            body: {
+                authorization: '' + id,
+                scambiovariabile: scambiovariabile
+            }
+        };
+    }
+********************

@@ -4,7 +4,7 @@ import { mpCls, mpMtd, mpPrm, mpPrp, ErroreMio } from "mp-holistic";
 import { ExpressParametro, ListaExpressParametro } from "mp-holistic/bin/express/parametro.express";
 import { IParametriEstratti, IReturn } from "mp-holistic/bin/express/utility/utility";
 import { ListaMetadataParametro } from "mp-holistic/bin/metadata/parametro.metadata";
-import { clientPostgres } from "..";
+import { clientPostgres, clientPostgres_ruolouno } from "..";
 
 let scambiovariabile = 0;
 
@@ -25,14 +25,14 @@ export class Admin {
             descrizione: '',
             sommario: '',
             tipo: 'varchar(n)',
-            /* grants: [{
+            grants: [{
                 events: [
                     'INSERT'
                 ],
                 ruoli: [
-                    'nomeruolouno'
-                ] 
-            }]*/
+                    'ruolodue'
+                ]
+            }]
         }
     })
     nome: string;
@@ -82,8 +82,8 @@ export class Admin {
     @mpMtd({
         itemExpressMetodo: {
             metodoEventi: {
-                Istanziatore: async (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {
-                    (<ListaExpressParametro>listaParametri).GetAutenticatore();
+                Istanziatore: (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {
+                    //(<ListaExpressParametro>listaParametri).GetAutenticatore();
                     let adminTmp: Admin = new Admin();/* await knexInstance<Admin>()
                         .select('username')
                         .from(Admin)
@@ -92,9 +92,20 @@ export class Admin {
                 }
             }
         }
-    }) CambiaNome(nome: string) {
-
-        return "ciao";
+    }) async CambiaNome(nome: string) {
+        try {
+            await clientPostgres_ruolouno.connect();
+            await clientPostgres_ruolouno.query('INSERT INTO public."Admin"' + " (nome) VALUES('mirko');");
+        } catch (error) {
+            console.log(error);
+        }
+        return <IReturn>{
+            stato:200,
+            body:{
+                messaggio:"ciao"
+            }
+        };
+        //return "ciao";
     }
 
     @mpMtd({

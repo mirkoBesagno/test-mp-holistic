@@ -1,0 +1,16 @@
+Ciao | /api/Admin/Ciao
+
+percorsi :{"pathGlobal":"/api/Admin/Ciao","patheader":"localhost","porta":8080}
+tipo :get
+path :Ciao
+interazione :rotta
+slow_down :{"windowMs":1000,"delayAfter":1000,"delayMs":5000,"maxDelayMs":6000,"skipFailedRequests":false,"skipSuccessfulRequests":false,"headers":false,"store":{}}
+rate_limit :{"windowMs":500,"max":1000}
+cors :undefined
+helmet :undefined
+middleware :[]
+listaHtml :[]
+metodo : 
+Ciao() {
+        return "ciao";
+    }
