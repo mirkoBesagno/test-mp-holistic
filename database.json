@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "driver": "pg",
+        "user": "postgres",
+        "password": "password",
+        "host": "localhost",
+        "database": "test-mp-holistic",
+        "port": "5432",
+        "schema": "my_schema"
+    }
+}

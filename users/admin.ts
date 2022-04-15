@@ -36,8 +36,26 @@ export class Admin {
         }
     })
     nome: string;
+    @mpPrp({
+        itemPostgresProprieta: {
+            nome: 'cognome',
+            descrizione: '',
+            sommario: '',
+            tipo: 'varchar(n)',
+            grants: [{
+                events: [
+                    'INSERT'
+                ],
+                ruoli: [
+                    'ruolodue'
+                ]
+            }]
+        }
+    })
+    cognome: string;
     constructor() {
         this.nome = '';
+        this.cognome = '';
     }
 
     @mpMtd({
@@ -100,9 +118,9 @@ export class Admin {
             console.log(error);
         }
         return <IReturn>{
-            stato:200,
-            body:{
-                messaggio:"ciao"
+            stato: 200,
+            body: {
+                messaggio: "ciao"
             }
         };
         //return "ciao";
