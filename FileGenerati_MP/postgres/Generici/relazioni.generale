@@ -1,0 +1,15 @@
+
+CREATE TABLE IF NOT EXISTS "Admin" (
+updated_at timestamp with time zone  NOT NULL  DEFAULT current_timestamp,
+created_at timestamp with time zone  NOT NULL  DEFAULT current_timestamp,
+deleted_at timestamp with time zone,
+"nome" varchar(255),
+"cognome" varchar(255),
+id SERIAL PRIMARY KEY
+); 
+,DROP TRIGGER IF EXISTS tr_somethings_updated_at ON "Admin";
+        CREATE TRIGGER tr_somethings_updated_at
+        BEFORE UPDATE
+        ON "Admin"
+        FOR EACH ROW
+        EXECUTE PROCEDURE update_updated_at_column();,CREATE INDEX IF NOT EXISTS idx_somethings_deleted_at ON "Admin" (deleted_at ASC);

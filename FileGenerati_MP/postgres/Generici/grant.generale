@@ -1,0 +1,6 @@
+
+GRANT  INSERT("nome") 
+                ON "Admin" 
+                TO "ruolodue";,GRANT  INSERT("cognome") 
+                ON "Admin" 
+                TO "ruolodue";

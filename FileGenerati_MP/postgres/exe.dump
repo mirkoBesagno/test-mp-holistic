@@ -1,0 +1,91 @@
+
+CREATE EXTENSION plv8;
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.updated_at = now();
+        RETURN NEW;
+    END;
+    $$ language 'plpgsql';
+DROP ROLE IF EXISTS "ruolouno";
+CREATE ROLE "ruolouno" WITH 
+                NOSUPERUSER 
+                NOCREATEDB
+                CREATEROLE 
+                INHERIT 
+                LOGIN 
+                NOREPLICATION   
+                NOBYPASSRLS 
+                ENCRYPTED PASSWORD 'ciao' 
+                 
+                ; 
+
+DROP ROLE IF EXISTS "ruolodue";
+CREATE ROLE "ruolodue" WITH 
+                NOSUPERUSER 
+                NOCREATEDB
+                CREATEROLE 
+                INHERIT 
+                LOGIN 
+                NOREPLICATION   
+                NOBYPASSRLS 
+                ENCRYPTED PASSWORD 'ciao' 
+                 
+                ; 
+
+DROP USER IF EXISTS "user";
+CREATE USER "user" WITH 
+                NOSUPERUSER 
+                NOCREATEDB
+                CREATEROLE 
+                INHERIT 
+                LOGIN 
+                NOREPLICATION  
+                NOBYPASSRLS 
+                PASSWORD 'ciao' 
+                 
+                IN ROLE  ruolouno
+                ; 
+
+CREATE TABLE IF NOT EXISTS "Admin" (
+updated_at timestamp with time zone  NOT NULL  DEFAULT current_timestamp,
+created_at timestamp with time zone  NOT NULL  DEFAULT current_timestamp,
+deleted_at timestamp with time zone,
+"nome" varchar(255),
+"cognome" varchar(255),
+id SERIAL PRIMARY KEY
+); 
+
+DROP TRIGGER IF EXISTS tr_somethings_updated_at ON "Admin";
+        CREATE TRIGGER tr_somethings_updated_at
+        BEFORE UPDATE
+        ON "Admin"
+        FOR EACH ROW
+        EXECUTE PROCEDURE update_updated_at_column();
+CREATE INDEX IF NOT EXISTS idx_somethings_deleted_at ON "Admin" (deleted_at ASC);
+
+
+GRANT  INSERT("nome") 
+                ON "Admin" 
+                TO "ruolodue";
+GRANT  INSERT("cognome") 
+                ON "Admin" 
+                TO "ruolodue";
+GRANT USAGE
+                ON ALL SEQUENCES IN SCHEMA public
+                TO "ruolouno";
+GRANT EXECUTE
+                ON ALL functions IN SCHEMA public
+                    TO "ruolouno";
+GRANT USAGE
+                ON ALL SEQUENCES IN SCHEMA public
+                TO "ruolodue";
+GRANT EXECUTE
+                ON ALL functions IN SCHEMA public
+                    TO "ruolodue";
+GRANT USAGE
+                ON ALL SEQUENCES IN SCHEMA public
+                TO "user";
+GRANT EXECUTE
+                ON ALL functions IN SCHEMA public
+                    TO "user";

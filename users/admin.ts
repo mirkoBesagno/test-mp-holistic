@@ -22,6 +22,7 @@ export class Admin {
     @mpPrp({
         itemPostgresProprieta: {
             nome: 'nome',
+            nomeVariante: 'nome',
             descrizione: '',
             sommario: '',
             tipo: 'varchar(n)',
@@ -39,6 +40,7 @@ export class Admin {
     @mpPrp({
         itemPostgresProprieta: {
             nome: 'cognome',
+            nomeVariante: 'cognome',
             descrizione: '',
             sommario: '',
             tipo: 'varchar(n)',
@@ -113,7 +115,8 @@ export class Admin {
     }) async CambiaNome(nome: string) {
         try {
             await clientPostgres_ruolouno.connect();
-            await clientPostgres_ruolouno.query('INSERT INTO public."Admin"' + " (nome) VALUES('mirko');");
+            await clientPostgres_ruolouno.query(
+                'INSERT INTO public."Admin"' + " (nome) VALUES('mirko');");
         } catch (error) {
             console.log(error);
         }

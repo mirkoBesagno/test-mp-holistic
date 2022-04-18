@@ -20,7 +20,7 @@ const main = new Main('api', undefined, false);
 main.expressMain.Inizializza('localhost', 8080, undefined, false);
 
 main.postgresMain.InizializzaORM({
-    dropAllTable: false,
+    dropAllTable: true,
     listaRuoli: [{
         connectionLimit: 1,
         inRole: ['ruolouno'],
@@ -65,7 +65,7 @@ export const clientPostgres = new Client({
     user: 'postgres',
     host: 'localhost',
     database: 'test-mp-holistic',
-    password: 'password',//'password', //'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
+    password: 'postgres',//'password', //'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
     port: 5432,
 });
 /* ruolouno */
@@ -89,12 +89,20 @@ console.log(admin);
 
 main.postgresMain.IstanziaORM(clientPostgres).then(() => {
 
-    main.postgresMain.ScriviFile(__dirname);
-    main.expressMain.ScriviFile(__dirname);
+    const path = 'C:/Users/mirko/OneDrive/Documenti/GitHub/test-mp-holistic';
+    try {
 
-    main.expressMain.StartHttpServer();
+        main.InizializzaFile(path);//(__dirname);
+        main.postgresMain.ScriviFile(path);//(__dirname);
+        main.expressMain.ScriviFile(path);//(__dirname);
 
-    console.log("FINITO");
+        main.expressMain.StartHttpServer();
+        console.log("FINITO BENE");
+    } catch (error) {
+        console.log(error);
+        console.log("FINITO MALE");
+    }
+
 });
 
 
