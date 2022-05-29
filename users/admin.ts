@@ -4,9 +4,16 @@ import { mpCls, mpMtd, mpPrm, mpPrp, ErroreMio } from "mp-holistic";
 import { ExpressParametro, ListaExpressParametro } from "mp-holistic/bin/express/parametro.express";
 import { IParametriEstratti, IReturn } from "mp-holistic/bin/express/utility/utility";
 import { ListaMetadataParametro } from "mp-holistic/bin/metadata/parametro.metadata";
+import { TypeDecoratoreParametro } from "mp-holistic/dist/bin/decoratori/parametro.decoratore";
 import { clientPostgres, pool } from "..";
 
 let scambiovariabile = 0;
+
+const autorizazione: TypeDecoratoreParametro = {
+    itemExpressParametro: {
+        autenticatore: true, tipo: 'varchar(n)', nomeVariante: 'authorization', posizione: 'header'
+    }
+};
 
 @mpCls({
     itemPostgresClasse: {
@@ -30,7 +37,7 @@ let scambiovariabile = 0;
                 ruoli: [
                     'ruolodue'
                 ],
-                colonneRiferimento:['id'],
+                colonneRiferimento: ['id'],
 
             }
         ]
@@ -52,7 +59,6 @@ export class Admin {
             throw new ErroreMio({ codiceErrore: 500, messaggio: 'Hei non hai le credenziali.' });
         }
     }
-
     @mpPrp({
         itemPostgresProprieta: {
             nome: 'nome',
@@ -92,7 +98,6 @@ export class Admin {
         this.nome = '';
         this.cognome = '';
     }
-
     @mpMtd({
 
     }) Ciao() {
@@ -119,7 +124,7 @@ export class Admin {
                 }
             }
         }
-    }) Presentati(@mpPrm({ itemExpressParametro: { autenticatore: true, tipo: 'varchar(n)', nomeVariante: 'authorization', posizione: 'header' } }) authorization: string) {
+    }) Presentati(@mpPrm(autorizazione) authorization: string) {
 
         if (authorization == '5') {
             scambiovariabile = Math.random();
@@ -138,7 +143,7 @@ export class Admin {
                 Istanziatore: Admin.IstanziatoreGenerico
             }
         }
-    }) async CambiaNome(@mpPrm({ itemExpressParametro: { autenticatore: true, tipo: 'varchar(n)', nomeVariante: 'authorization', posizione: 'header' } }) authorization: string,
+    }) async CambiaNome(@mpPrm(autorizazione) authorization: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)' } }) nome: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'id', posizione: 'query', tipo: 'varchar(n)' } }) id: string) {
         try {
@@ -186,14 +191,13 @@ export class Admin {
         };
         //return "ciao";
     }
-    
     @mpMtd({
         itemExpressMetodo: {
             metodoEventi: {
                 Istanziatore: Admin.IstanziatoreGenerico
             }
         }
-    }) async CambiaCognome(@mpPrm({ itemExpressParametro: { autenticatore: true, tipo: 'varchar(n)', nomeVariante: 'authorization', posizione: 'header' } }) authorization: string,
+    }) async CambiaCognome(@mpPrm(autorizazione) authorization: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)' } }) cognome: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'id', posizione: 'query', tipo: 'varchar(n)' } }) id: string) {
         try {
@@ -241,7 +245,6 @@ export class Admin {
         };
         //return "ciao";
     }
-
     @mpMtd({
         itemExpressMetodo: {
             metodoSpawProcess: {
@@ -287,7 +290,6 @@ export class Admin {
             }
         };
     }
-
     @mpMtd() async AggiungiAdmin(@mpPrm({ itemExpressParametro: { nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)' } }) nome: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)' } }) cognome: string) {
         try {
@@ -321,5 +323,4 @@ export class Admin {
         };
         //return "ciao";
     }
-
 }
