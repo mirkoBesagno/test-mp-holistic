@@ -7,7 +7,7 @@ CambiaNome | /api/Admin/CambiaNome
                         .where({ id: listaParametri[0] }).first(); */
                     return adminTmp;
                 }
-percorsi :{"pathGlobal":"/api/Admin/CambiaNome","patheader":"localhost","porta":8080}
+percorsi :{"pathGlobal":"/api/Admin/CambiaNome","patheader":"localhost","porta":11400}
 tipo :get
 path :CambiaNome
 interazione :rotta

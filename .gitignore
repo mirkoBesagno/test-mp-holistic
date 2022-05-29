@@ -128,3 +128,6 @@ dist
 
 #package-lock
 ./package-lock.json
+
+./test-mp-holistic-prime
+./test-mp-holistic-prime\*

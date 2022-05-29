@@ -8,10 +8,10 @@ import "reflect-metadata";
 import { Main } from "mp-holistic";
 
 import { Admin } from "./users/admin";
-import { Client } from "pg";
+import { Client, Pool } from "pg";
 
 
-/* const admin: Admin = new Admin(); */
+/* const admin: AdPoolmin = new Admin(); */
 const admin: Admin = new Admin();
 
 const main = new Main('api', undefined, false);
@@ -30,7 +30,7 @@ main.postgresMain.InizializzaORM({
             creaTabelle: false,
             creaUser: true,
             isSuperUser: false,
-            login: true,
+            login: true
         },
         password: 'ciao'
     }, {
@@ -45,19 +45,6 @@ main.postgresMain.InizializzaORM({
             login: true,
         },
         password: 'ciao'
-    }],
-    listaUser: [{
-        connectionLimit: 1,
-        inRole: ['ruolouno'],
-        nome: 'user',
-        option: {
-            creaDB: false,
-            creaTabelle: false,
-            creaUser: true,
-            isSuperUser: false,
-            login: true
-        },
-        password: 'ciao'
     }]
 });
 
@@ -69,21 +56,67 @@ export const clientPostgres = new Client({
     port: 5432,
 });
 /* ruolouno */
-export const clientPostgres_ruolouno = new Client({
+/* export const clientPostgres_ruolouno = new Client({
     user: 'ruolouno',
     host: 'localhost',
     database: 'test-mp-holistic',
     password: 'ciao',//'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
     port: 5432,
-});
+}); */
 /* ruolodue */
-export const clientPostgres_ruoldue = new Client({
+/* try {
+    const clientPostgres_ruolodue = new Client({
+        user: 'ruolodue',
+        host: 'localhost',
+        database: 'test-mp-holistic',
+        password: 'ciao',//'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
+        port: 5432,
+    });
+    clientPostgres_ruolodue.connect();
+    console.log(clientPostgres_ruolodue);
+} catch (error) {
+    console.log(error);
+}
+try {
+    const clientPostgres_ruolotre = new Client({
+        user: 'ruolodue',
+        host: 'localhost',
+        database: 'test-mp-holistic',
+        password: 'ciao',//'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
+        port: 5432,
+    });
+    clientPostgres_ruolotre.connect();
+    console.log(clientPostgres_ruolotre);
+} catch (error) {
+    console.log(error);
+}
+try {
+    const clientPostgres_ruoloquattro = new Client({
+        user: 'ruolodue',
+        host: 'localhost',
+        database: 'test-mp-holistic',
+        password: 'ciao',//'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
+        port: 5432,
+    });
+    clientPostgres_ruoloquattro.connect();
+    console.log(clientPostgres_ruoloquattro);
+} catch (error) {
+    console.log(error);
+} */
+
+export const pool = new Pool({
     user: 'ruolodue',
     host: 'localhost',
     database: 'test-mp-holistic',
     password: 'ciao',//'postgres', //DGRmjYyNw38iH5mwsr4qXvZZfgNljw
     port: 5432,
+    max: 1,
+    connectionTimeoutMillis: 300,
+    idleTimeoutMillis: 300
 });
+
+/* clientPostgres_ruolouno.connect();
+clientPostgres_ruolodue.connect(); */
 
 console.log(admin);
 

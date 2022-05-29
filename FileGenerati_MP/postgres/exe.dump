@@ -1,5 +1,10 @@
 
 CREATE EXTENSION plv8;
+DROP SCHEMA public CASCADE;
+    CREATE SCHEMA public;
+    GRANT ALL ON SCHEMA public TO postgres;
+    GRANT ALL ON SCHEMA public TO public;
+    COMMENT ON SCHEMA public IS 'standard public schema';
 CREATE OR REPLACE FUNCTION update_updated_at_column()
     RETURNS TRIGGER AS $$
     BEGIN
@@ -17,7 +22,7 @@ CREATE ROLE "ruolouno" WITH
                 NOREPLICATION   
                 NOBYPASSRLS 
                 ENCRYPTED PASSWORD 'ciao' 
-                 
+                CONNECTION LIMIT 1 
                 ; 
 
 DROP ROLE IF EXISTS "ruolodue";
@@ -30,7 +35,7 @@ CREATE ROLE "ruolodue" WITH
                 NOREPLICATION   
                 NOBYPASSRLS 
                 ENCRYPTED PASSWORD 'ciao' 
-                 
+                CONNECTION LIMIT 1 
                 ; 
 
 DROP USER IF EXISTS "user";
@@ -43,7 +48,7 @@ CREATE USER "user" WITH
                 NOREPLICATION  
                 NOBYPASSRLS 
                 PASSWORD 'ciao' 
-                 
+                CONNECTION LIMIT 1 
                 IN ROLE  ruolouno
                 ; 
 
@@ -66,11 +71,11 @@ CREATE INDEX IF NOT EXISTS idx_somethings_deleted_at ON "Admin" (deleted_at ASC)
 
 
 GRANT  INSERT("nome") 
-                ON "Admin" 
-                TO "ruolodue";
+                ON public."Admin" 
+                TO ruolodue;
 GRANT  INSERT("cognome") 
-                ON "Admin" 
-                TO "ruolodue";
+                ON public."Admin" 
+                TO ruolodue;
 GRANT USAGE
                 ON ALL SEQUENCES IN SCHEMA public
                 TO "ruolouno";

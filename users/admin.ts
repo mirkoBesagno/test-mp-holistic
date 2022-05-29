@@ -4,10 +4,9 @@ import { mpCls, mpMtd, mpPrm, mpPrp, ErroreMio } from "mp-holistic";
 import { ExpressParametro, ListaExpressParametro } from "mp-holistic/bin/express/parametro.express";
 import { IParametriEstratti, IReturn } from "mp-holistic/bin/express/utility/utility";
 import { ListaMetadataParametro } from "mp-holistic/bin/metadata/parametro.metadata";
-import { clientPostgres, clientPostgres_ruolouno } from "..";
+import { clientPostgres, pool } from "..";
 
 let scambiovariabile = 0;
-
 
 @mpCls({
     itemPostgresClasse: {
@@ -15,9 +14,44 @@ let scambiovariabile = 0;
         abilitaDeletedAt: true,
         abilitaUpdatedAt: true,
         creaId: true,
+        grants: [
+            /* {
+                events: [
+                    'SELECT'
+                ],
+                ruoli: [
+                    'ruolodue'
+                ]
+            }, */
+            {
+                events: [
+                    'SELECT'
+                ],
+                ruoli: [
+                    'ruolodue'
+                ],
+                colonneRiferimento:['id'],
+
+            }
+        ]
     }
 })
 export class Admin {
+
+    static async IstanziatoreGenerico(parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) {
+        const aout = <ExpressParametro>(<ListaExpressParametro>listaParametri).GetAutenticatore();
+        try {
+            const rito = await clientPostgres.query('SELECT * FROM "Admin" where id = $1', [aout.valore]);
+            const tt = <Admin>rito.rows[0];
+            const gg = new Admin();
+            gg.nome = tt.nome;
+            gg.cognome = tt.cognome;
+            return gg;
+        } catch (error) {
+            console.log(error);
+            throw new ErroreMio({ codiceErrore: 500, messaggio: 'Hei non hai le credenziali.' });
+        }
+    }
 
     @mpPrp({
         itemPostgresProprieta: {
@@ -28,15 +62,14 @@ export class Admin {
             tipo: 'varchar(n)',
             grants: [{
                 events: [
-                    'INSERT'
+                    'INSERT', 'UPDATE'
                 ],
                 ruoli: [
                     'ruolodue'
                 ]
             }]
         }
-    })
-    nome: string;
+    }) nome: string;
     @mpPrp({
         itemPostgresProprieta: {
             nome: 'cognome',
@@ -51,10 +84,10 @@ export class Admin {
                 ruoli: [
                     'ruolodue'
                 ]
-            }]
+            }],
+            Constraints: { notNull: false, unique: { nome: 'cognome', unique: true } }
         }
-    })
-    cognome: string;
+    }) cognome: string;
     constructor() {
         this.nome = '';
         this.cognome = '';
@@ -102,23 +135,103 @@ export class Admin {
     @mpMtd({
         itemExpressMetodo: {
             metodoEventi: {
-                Istanziatore: (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {
-                    //(<ListaExpressParametro>listaParametri).GetAutenticatore();
-                    let adminTmp: Admin = new Admin();/* await knexInstance<Admin>()
-                        .select('username')
-                        .from(Admin)
-                        .where({ id: listaParametri[0] }).first(); */
-                    return adminTmp;
-                }
+                Istanziatore: Admin.IstanziatoreGenerico
             }
         }
-    }) async CambiaNome(nome: string) {
+    }) async CambiaNome(@mpPrm({ itemExpressParametro: { autenticatore: true, tipo: 'varchar(n)', nomeVariante: 'authorization', posizione: 'header' } }) authorization: string,
+        @mpPrm({ itemExpressParametro: { nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)' } }) nome: string,
+        @mpPrm({ itemExpressParametro: { nomeVariante: 'id', posizione: 'query', tipo: 'varchar(n)' } }) id: string) {
         try {
-            await clientPostgres_ruolouno.connect();
-            await clientPostgres_ruolouno.query(
-                'INSERT INTO public."Admin"' + " (nome) VALUES('mirko');");
-        } catch (error) {
+            await pool.query(
+                `UPDATE public."Admin"
+                SET nome='${nome}'
+                WHERE id=${id};
+                `);
+            /* await pool.query(
+                `UPDATE public."Admin"
+                SET nome='${nome}';
+                `); */
+        } catch (error: any) {
             console.log(error);
+            if ('code' in error && error.code == '23505') {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore di duplicazione"
+                    }
+                };
+            }
+            else if ('code' in error && error.code == '42501') {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore di permesso"
+                    }
+                };
+            }
+            else {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore generico"
+                    }
+                };
+            }
+        }
+        return <IReturn>{
+            stato: 200,
+            body: {
+                messaggio: "ciao"
+            }
+        };
+        //return "ciao";
+    }
+    
+    @mpMtd({
+        itemExpressMetodo: {
+            metodoEventi: {
+                Istanziatore: Admin.IstanziatoreGenerico
+            }
+        }
+    }) async CambiaCognome(@mpPrm({ itemExpressParametro: { autenticatore: true, tipo: 'varchar(n)', nomeVariante: 'authorization', posizione: 'header' } }) authorization: string,
+        @mpPrm({ itemExpressParametro: { nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)' } }) cognome: string,
+        @mpPrm({ itemExpressParametro: { nomeVariante: 'id', posizione: 'query', tipo: 'varchar(n)' } }) id: string) {
+        try {
+            await pool.query(
+                `UPDATE public."Admin"
+                SET cognome='${cognome}'
+                WHERE id=${id};
+                `);
+            /* await pool.query(
+                `UPDATE public."Admin"
+                SET nome='${nome}';
+                `); */
+        } catch (error: any) {
+            console.log(error);
+            if ('code' in error && error.code == '23505') {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore di duplicazione"
+                    }
+                };
+            }
+            else if ('code' in error && error.code == '42501') {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore di permesso"
+                    }
+                };
+            }
+            else {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore generico"
+                    }
+                };
+            }
         }
         return <IReturn>{
             stato: 200,
@@ -150,7 +263,13 @@ export class Admin {
                         console.log(error);
                         throw new ErroreMio({ codiceErrore: 500, messaggio: 'Non so il motivo' });
                     }
-                }
+                }/* ,
+                onDopoAverTerminatoLaFunzione: (item) => {
+                    return <IReturn>{
+                        body: { messaggio: item },
+                        stato: 200
+                    };
+                } */
             }
         }
     }) CreaNuovoProcesso(@mpPrm({ itemExpressParametro: { tipo: 'varchar(n)' } }) id: string) {
@@ -168,4 +287,39 @@ export class Admin {
             }
         };
     }
+
+    @mpMtd() async AggiungiAdmin(@mpPrm({ itemExpressParametro: { nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)' } }) nome: string,
+        @mpPrm({ itemExpressParametro: { nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)' } }) cognome: string) {
+        try {
+            await pool.query(
+                'INSERT INTO public."Admin"' + " (nome,cognome) VALUES('" +
+                nome + "','" + cognome + "');");
+        } catch (error: any) {
+            console.log(error);
+            if ('code' in error && error.code == '23505') {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore di duplicazione"
+                    }
+                };
+            }
+            else {
+                return <IReturn>{
+                    stato: 200,
+                    body: {
+                        messaggio: "errore generico"
+                    }
+                };
+            }
+        }
+        return <IReturn>{
+            stato: 200,
+            body: {
+                messaggio: "ciao"
+            }
+        };
+        //return "ciao";
+    }
+
 }

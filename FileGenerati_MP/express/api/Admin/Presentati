@@ -28,7 +28,7 @@ Presentati | /api/Admin/Presentati
                     }
                     return adminTmp !== null && adminTmp !== void 0 ? adminTmp : undefined;
                 })
-percorsi :{"pathGlobal":"/api/Admin/Presentati","patheader":"localhost","porta":8080}
+percorsi :{"pathGlobal":"/api/Admin/Presentati","patheader":"localhost","porta":11400}
 tipo :get
 path :Presentati
 interazione :rotta

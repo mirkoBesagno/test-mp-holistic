@@ -1,6 +1,6 @@
 
 GRANT  INSERT("nome") 
-                ON "Admin" 
-                TO "ruolodue";,GRANT  INSERT("cognome") 
-                ON "Admin" 
-                TO "ruolodue";
+                ON public."Admin" 
+                TO ruolodue;,GRANT  INSERT("cognome") 
+                ON public."Admin" 
+                TO ruolodue;

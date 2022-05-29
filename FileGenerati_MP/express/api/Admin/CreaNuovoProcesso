@@ -21,8 +21,13 @@ CreaNuovoProcesso | /api/Admin/CreaNuovoProcesso
                         console.log(error);
                         throw new mp_holistic_1.ErroreMio({ codiceErrore: 500, messaggio: 'Non so il motivo' });
                     }
-                })
-percorsi :{"pathGlobal":"/api/Admin/CreaNuovoProcesso","patheader":"localhost","porta":8080}
+                })	onLog :(item) => {
+                    return {
+                        body: { messaggio: item },
+                        stato: 200
+                    };
+                }
+percorsi :{"pathGlobal":"/api/Admin/CreaNuovoProcesso","patheader":"localhost","porta":11400}
 tipo :get
 path :CreaNuovoProcesso
 interazione :rotta

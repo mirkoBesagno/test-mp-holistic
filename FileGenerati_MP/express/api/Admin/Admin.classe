@@ -3,7 +3,7 @@ html : []
 nomeOriginale : Admin
 nomeVariante : Admin
 path : Admin
-percorsi : {"pathGlobal":"/api/Admin","patheader":"localhost","porta":8080}
+percorsi : {"pathGlobal":"/api/Admin","patheader":"localhost","porta":11400}
 rotte : function(req, res, next) {
     app.handle(req, res, next);
   }

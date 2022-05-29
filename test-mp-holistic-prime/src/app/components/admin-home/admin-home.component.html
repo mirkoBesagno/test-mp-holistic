@@ -1,0 +1,20 @@
+<p>admin-home works!</p>
+
+<div>
+  <label for="float-input-invalid">
+    Nome
+    <input type="text" pInputText [(ngModel)]="nome" class="">
+  </label>
+</div>
+<div>
+  <label for="float-input-invalid">
+    Cognome
+    <input type="text" pInputText [(ngModel)]="cognome" class="ng-invalid ng-dirty">
+  </label>
+</div>
+
+<form [formGroup]="itemPersona" (ngSubmit)="onFormSubmit()">
+  Name: <input formControlName="nome"  placeholder="Enter Name">
+  Cognome: <input formControlName="cognome"  placeholder="Enter Age">
+       <button type="submit">Submit</button>
+</form> 

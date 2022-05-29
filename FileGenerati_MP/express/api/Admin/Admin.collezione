@@ -3,13 +3,13 @@ html : []
 nomeOriginale : Admin
 nomeVariante : Admin
 path : Admin
-percorsi : {"pathGlobal":"/api/Admin","patheader":"localhost","porta":8080}
+percorsi : {"pathGlobal":"/api/Admin","patheader":"localhost","porta":11400}
 rotte : function(req, res, next) {
     app.handle(req, res, next);
   }
 Ciao | /api/Admin/Ciao
 
-percorsi :{"pathGlobal":"/api/Admin/Ciao","patheader":"localhost","porta":8080}
+percorsi :{"pathGlobal":"/api/Admin/Ciao","patheader":"localhost","porta":11400}
 tipo :get
 path :Ciao
 interazione :rotta
@@ -54,7 +54,7 @@ Presentati | /api/Admin/Presentati
                     }
                     return adminTmp !== null && adminTmp !== void 0 ? adminTmp : undefined;
                 })
-percorsi :{"pathGlobal":"/api/Admin/Presentati","patheader":"localhost","porta":8080}
+percorsi :{"pathGlobal":"/api/Admin/Presentati","patheader":"localhost","porta":11400}
 tipo :get
 path :Presentati
 interazione :rotta
@@ -86,7 +86,7 @@ CambiaNome | /api/Admin/CambiaNome
                         .where({ id: listaParametri[0] }).first(); */
                     return adminTmp;
                 }
-percorsi :{"pathGlobal":"/api/Admin/CambiaNome","patheader":"localhost","porta":8080}
+percorsi :{"pathGlobal":"/api/Admin/CambiaNome","patheader":"localhost","porta":11400}
 tipo :get
 path :CambiaNome
 interazione :rotta
@@ -139,8 +139,13 @@ CreaNuovoProcesso | /api/Admin/CreaNuovoProcesso
                         console.log(error);
                         throw new mp_holistic_1.ErroreMio({ codiceErrore: 500, messaggio: 'Non so il motivo' });
                     }
-                })
-percorsi :{"pathGlobal":"/api/Admin/CreaNuovoProcesso","patheader":"localhost","porta":8080}
+                })	onLog :(item) => {
+                    return {
+                        body: { messaggio: item },
+                        stato: 200
+                    };
+                }
+percorsi :{"pathGlobal":"/api/Admin/CreaNuovoProcesso","patheader":"localhost","porta":11400}
 tipo :get
 path :CreaNuovoProcesso
 interazione :rotta

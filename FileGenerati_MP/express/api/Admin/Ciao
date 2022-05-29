@@ -1,6 +1,6 @@
 Ciao | /api/Admin/Ciao
 
-percorsi :{"pathGlobal":"/api/Admin/Ciao","patheader":"localhost","porta":8080}
+percorsi :{"pathGlobal":"/api/Admin/Ciao","patheader":"localhost","porta":11400}
 tipo :get
 path :Ciao
 interazione :rotta
