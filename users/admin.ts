@@ -15,6 +15,10 @@ const autorizazione: TypeDecoratoreParametro = {
     }
 };
 
+const middlewareTest = (req: any, res: any, next: any) => {
+    console.log("Middleware test!!");
+    next();
+};
 @mpCls({
     itemPostgresClasse: {
         abilitaCreatedAt: true,
@@ -98,8 +102,9 @@ export class Admin {
         this.nome = '';
         this.cognome = '';
     }
-    @mpMtd({
 
+    @mpMtd({
+        itemExpressMetodo: { metodoLimitazioni: { middleware: [middlewareTest] } }
     }) Ciao() {
         return "ciao";
     }
@@ -258,7 +263,6 @@ export class Admin {
             },
             metodoEventi: {
                 Istanziatore: async (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {
-
                     try {
                         const gg = new Admin();
                         return gg;

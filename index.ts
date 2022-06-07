@@ -126,6 +126,10 @@ main.postgresMain.IstanziaORM(clientPostgres).then(() => {
     try {
 
         main.InizializzaFile(path);//(__dirname);
+        //main.expressMain.serverExpressDecorato.use(main.expressMain.httpServer.json());
+        main.expressMain.serverExpressDecorato.post('/user', (req: any, res: any) => {
+            res.send("OK!!!! mp");
+          });
         main.postgresMain.ScriviFile(path);//(__dirname);
         main.expressMain.ScriviFile(path);//(__dirname);
 
