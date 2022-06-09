@@ -259,7 +259,7 @@ export class Admin {
                         nome: 'authorization',
                         posizione: 'header'
                     }
-                ]
+                ],pathAccept:['/api/admin/Presentati']
             },
             metodoEventi: {
                 Istanziatore: async (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {

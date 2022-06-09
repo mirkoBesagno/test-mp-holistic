@@ -17,7 +17,7 @@ const admin: Admin = new Admin();
 const main = new Main('api', undefined, false);
 
 
-main.expressMain.Inizializza('localhost', 8080, undefined, false);
+main.expressMain.Inizializza('localhost', 8080, undefined, false,true);
 
 main.postgresMain.InizializzaORM({
     dropAllTable: true,
