@@ -19,6 +19,10 @@ const middlewareTest = (req: any, res: any, next: any) => {
     console.log("Middleware test!!");
     next();
 };
+const middlewareTest2 = (req: any, res: any, next: any) => {
+    console.log("Middleware test!!");
+    next();
+};
 @mpCls({
     itemPostgresClasse: {
         abilitaCreatedAt: true,
@@ -45,10 +49,19 @@ const middlewareTest = (req: any, res: any, next: any) => {
 
             }
         ]
+    },
+    itemExpressClasse: {
+        listaMiddleware: [middlewareTest2]
     }
 })
 export class Admin {
 
+    /* @mpPrp({
+        itemPostgresProprieta:{
+            tipo:'serial',
+            nome:'id',descrizione:'',sommario:''
+        }
+    })  */id: number;
     static async IstanziatoreGenerico(parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) {
         const aout = <ExpressParametro>(<ListaExpressParametro>listaParametri).GetAutenticatore();
         try {
@@ -99,6 +112,7 @@ export class Admin {
         }
     }) cognome: string;
     constructor() {
+        this.id = 0;
         this.nome = '';
         this.cognome = '';
     }
@@ -259,7 +273,7 @@ export class Admin {
                         nome: 'authorization',
                         posizione: 'header'
                     }
-                ],pathAccept:['/api/admin/Presentati']
+                ], pathAccept: ['/api/admin/Presentati']
             },
             metodoEventi: {
                 Istanziatore: async (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {
@@ -326,5 +340,27 @@ export class Admin {
             }
         };
         //return "ciao";
+    }
+
+
+    @mpMtd() async AggiungiCompagno(
+        @mpPrm({
+            itemExpressParametro: {
+                nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)'
+            }
+        }) nome: string, @mpPrm({
+            itemExpressParametro: {
+                nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)'
+            }
+        }) cognome: string) {
+        const tmp = await pool.query(`INSERT INTO public."Compagno"
+        (nome,cognome)
+        VALUES(${nome},${cognome});`);
+    }
+
+    @mpMtd() async AggiungiGruppo() {
+        const tmp = await pool.query(`INSERT INTO public."Gruppo"
+        ()
+        VALUES();`);
     }
 }

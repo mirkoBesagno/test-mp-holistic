@@ -9,15 +9,23 @@ import { Main } from "mp-holistic";
 
 import { Admin } from "./users/admin";
 import { Client, Pool } from "pg";
+import { Compagno } from "./users/compagno";
+import { Gruppo } from "./users/gruppo";
+import { Incontro } from "./users/incontro";
+import { Partecipa } from "./users/utility/partecipa";
 
 
 /* const admin: AdPoolmin = new Admin(); */
 const admin: Admin = new Admin();
+const compagno: Compagno = new Compagno();
+const gruppo: Gruppo = new Gruppo();
+const incontro: Incontro = new Incontro();
+const partecipa: Partecipa = new Partecipa();
 
 const main = new Main('api', undefined, false);
 
 
-main.expressMain.Inizializza('localhost', 8080, undefined, false,true);
+main.expressMain.Inizializza('localhost', 8080, undefined, false, true);
 
 main.postgresMain.InizializzaORM({
     dropAllTable: true,
@@ -118,7 +126,7 @@ export const pool = new Pool({
 /* clientPostgres_ruolouno.connect();
 clientPostgres_ruolodue.connect(); */
 
-console.log(admin);
+console.log(admin, compagno,gruppo,incontro,partecipa);
 
 main.postgresMain.IstanziaORM(clientPostgres).then(() => {
 
@@ -129,7 +137,7 @@ main.postgresMain.IstanziaORM(clientPostgres).then(() => {
         //main.expressMain.serverExpressDecorato.use(main.expressMain.httpServer.json());
         main.expressMain.serverExpressDecorato.post('/user', (req: any, res: any) => {
             res.send("OK!!!! mp");
-          });
+        });
         main.postgresMain.ScriviFile(path);//(__dirname);
         main.expressMain.ScriviFile(path);//(__dirname);
 
