@@ -1,5 +1,5 @@
 import { mpCls, mpPrp } from "mp-holistic";
-import { IIt, It } from "../../utility/It";
+import { It } from "../../utility/It";
 import { Compagno } from "../compagno";
 import { Gruppo } from "../gruppo";
 

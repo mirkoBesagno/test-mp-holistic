@@ -5,7 +5,7 @@ import { ExpressParametro, ListaExpressParametro } from "mp-holistic/bin/express
 import { IParametriEstratti, IReturn } from "mp-holistic/bin/express/utility/utility";
 import { ListaMetadataParametro } from "mp-holistic/bin/metadata/parametro.metadata";
 import { TypeDecoratoreParametro } from "mp-holistic/dist/bin/decoratori/parametro.decoratore";
-import { clientPostgres, pool } from "..";
+import { clientPostgres } from "..";
 
 let scambiovariabile = 0;
 
@@ -28,7 +28,8 @@ const middlewareTest2 = (req: any, res: any, next: any) => {
         abilitaCreatedAt: true,
         abilitaDeletedAt: true,
         abilitaUpdatedAt: true,
-        creaId: true,
+        tracciamento:true,
+        creaId: false,
         grants: [
             /* {
                 events: [
@@ -38,7 +39,7 @@ const middlewareTest2 = (req: any, res: any, next: any) => {
                     'ruolodue'
                 ]
             }, */
-            {
+            /* {
                 events: [
                     'SELECT'
                 ],
@@ -47,7 +48,7 @@ const middlewareTest2 = (req: any, res: any, next: any) => {
                 ],
                 colonneRiferimento: ['id'],
 
-            }
+            } */
         ]
     },
     itemExpressClasse: {
@@ -82,15 +83,15 @@ export class Admin {
             nomeVariante: 'nome',
             descrizione: '',
             sommario: '',
-            tipo: 'varchar(n)',
-            grants: [{
+            tipo: 'varchar(n)'
+            /* grants: [{
                 events: [
                     'INSERT', 'UPDATE'
                 ],
                 ruoli: [
                     'ruolodue'
                 ]
-            }]
+            }] */
         }
     }) nome: string;
     @mpPrp({
@@ -100,14 +101,14 @@ export class Admin {
             descrizione: '',
             sommario: '',
             tipo: 'varchar(n)',
-            grants: [{
+            /* grants: [{
                 events: [
                     'INSERT'
                 ],
                 ruoli: [
                     'ruolodue'
                 ]
-            }],
+            }], */
             Constraints: { notNull: false, unique: { nome: 'cognome', unique: true } }
         }
     }) cognome: string;
@@ -166,12 +167,12 @@ export class Admin {
         @mpPrm({ itemExpressParametro: { nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)' } }) nome: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'id', posizione: 'query', tipo: 'varchar(n)' } }) id: string) {
         try {
-            await pool.query(
+            await clientPostgres.query(
                 `UPDATE public."Admin"
                 SET nome='${nome}'
                 WHERE id=${id};
                 `);
-            /* await pool.query(
+            /* await clientPostgres.query(
                 `UPDATE public."Admin"
                 SET nome='${nome}';
                 `); */
@@ -220,12 +221,12 @@ export class Admin {
         @mpPrm({ itemExpressParametro: { nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)' } }) cognome: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'id', posizione: 'query', tipo: 'varchar(n)' } }) id: string) {
         try {
-            await pool.query(
+            await clientPostgres.query(
                 `UPDATE public."Admin"
                 SET cognome='${cognome}'
                 WHERE id=${id};
                 `);
-            /* await pool.query(
+            /* await clientPostgres.query(
                 `UPDATE public."Admin"
                 SET nome='${nome}';
                 `); */
@@ -266,7 +267,7 @@ export class Admin {
     }
     @mpMtd({
         itemExpressMetodo: {
-            metodoSpawProcess: {
+            /* metodoSpawProcess: {
                 isSpawTrigger: 'authorization',
                 checkSpawTrigger: [
                     {
@@ -274,7 +275,7 @@ export class Admin {
                         posizione: 'header'
                     }
                 ], pathAccept: ['/api/admin/Presentati']
-            },
+            }, */
             metodoEventi: {
                 Istanziatore: async (parametri: IParametriEstratti, listaParametri: ListaMetadataParametro) => {
                     try {
@@ -311,7 +312,7 @@ export class Admin {
     @mpMtd() async AggiungiAdmin(@mpPrm({ itemExpressParametro: { nomeVariante: 'nome', posizione: 'query', tipo: 'varchar(n)' } }) nome: string,
         @mpPrm({ itemExpressParametro: { nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)' } }) cognome: string) {
         try {
-            await pool.query(
+            await clientPostgres.query(
                 'INSERT INTO public."Admin"' + " (nome,cognome) VALUES('" +
                 nome + "','" + cognome + "');");
         } catch (error: any) {
@@ -353,14 +354,20 @@ export class Admin {
                 nomeVariante: 'cognome', posizione: 'query', tipo: 'varchar(n)'
             }
         }) cognome: string) {
-        const tmp = await pool.query(`INSERT INTO public."Compagno"
-        (nome,cognome)
-        VALUES(${nome},${cognome});`);
+        /* const tmp = await clientPostgres.query(`
+        INSERT INTO public."Compagno"
+        (updated_at, created_at, nome, cognome)
+        VALUES(CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '${nome}', '${cognome}');`); */
+        const tmp = await clientPostgres.query(`INSERT INTO public."Compagno"
+        (nome,cognome) 
+        VALUES('${nome}', '${cognome}');`);
+        return tmp;
     }
 
     @mpMtd() async AggiungiGruppo() {
-        const tmp = await pool.query(`INSERT INTO public."Gruppo"
+        const tmp = await clientPostgres.query(`INSERT INTO public."Gruppo"
         ()
         VALUES();`);
+        return tmp;
     }
 }

@@ -29,7 +29,7 @@ main.expressMain.Inizializza('localhost', 8080, undefined, false, true);
 
 main.postgresMain.InizializzaORM({
     dropAllTable: true,
-    listaRuoli: [{
+    /* listaRuoli: [{
         connectionLimit: 1,
         inRole: ['ruolouno'],
         nome: 'ruolouno',
@@ -53,7 +53,7 @@ main.postgresMain.InizializzaORM({
             login: true,
         },
         password: 'ciao'
-    }]
+    }] */
 });
 
 export const clientPostgres = new Client({
@@ -129,7 +129,6 @@ clientPostgres_ruolodue.connect(); */
 console.log(admin, compagno,gruppo,incontro,partecipa);
 
 main.postgresMain.IstanziaORM(clientPostgres).then(() => {
-
     const path = 'C:/Users/mirko/OneDrive/Documenti/GitHub/test-mp-holistic';
     try {
 
@@ -147,7 +146,6 @@ main.postgresMain.IstanziaORM(clientPostgres).then(() => {
         console.log(error);
         console.log("FINITO MALE");
     }
-
 });
 
 

@@ -1,5 +1,5 @@
 import { mpCls, mpPrp } from "mp-holistic";
-import { IIt, IUnionable } from "../utility/It";
+import { IIt } from "../utility/It";
 import { Compagno } from "./compagno";
 import { Gruppo } from "./gruppo";
 

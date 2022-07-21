@@ -1,9 +1,6 @@
 import { mpCls, mpMtd, mpPrm, mpPrp } from "mp-holistic";
 import { pool } from "..";
 import { IIt } from "../utility/It";
-import { Lista } from "../utility/lista";
-import { Compagno } from "./compagno";
-import { Incontro } from "./incontro";
 
 
 @mpCls({
@@ -69,5 +66,6 @@ export class Gruppo implements IIt {
         const tmp = await pool.query(`INSERT INTO public."Incontro"
         (gruppo,compagnoPartecipante)
         VALUES(${this.id},${partecipante});`);
+        return tmp;
     }
 }
